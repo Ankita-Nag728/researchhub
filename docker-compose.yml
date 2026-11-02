@@ -1,0 +1,17 @@
+# Local PostgreSQL for development:  docker compose up -d db
+# The password below is for local development only. Never reuse it anywhere real.
+services:
+  db:
+    image: postgres:16
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: researchhub
+      POSTGRES_PASSWORD: dev_only_change_me
+      POSTGRES_DB: researchhub_dev
+    ports:
+      - "127.0.0.1:5432:5432"   # reachable from this computer only
+    volumes:
+      - researchhub_pgdata:/var/lib/postgresql/data
+      - ./backend/scripts/create-test-db.sql:/docker-entrypoint-initdb.d/create-test-db.sql:ro
+volumes:
+  researchhub_pgdata:
